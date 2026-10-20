@@ -2,168 +2,120 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const NightwatchApp());
+  runApp(const EVPVideoApp());
 }
 
-class NightwatchApp extends StatelessWidget {
-  const NightwatchApp({super.key});
+class EVPVideoApp extends StatelessWidget {
+  const EVPVideoApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'EVP Video App',
       debugShowCheckedModeBanner: false,
-      title: 'NIGHTWATCH EVP',
-      theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: const Color(0xFF080D09),
-        colorScheme: const ColorScheme.dark(
-          primary: Color(0xFF80FF72),
-          secondary: Color(0xFFB5FF9B),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.deepPurple,
         ),
+        useMaterial3: true,
       ),
-      home: const NightwatchHome(),
+      home: const EVPHomePage(),
     );
   }
 }
 
-class NightwatchHome extends StatelessWidget {
-  const NightwatchHome({super.key});
+class EVPHomePage extends StatefulWidget {
+  const EVPHomePage({super.key});
+
+  @override
+  State<EVPHomePage> createState() => _EVPHomePageState();
+}
+
+class _EVPHomePageState extends State<EVPHomePage> {
+  bool isRecording = false;
+  String status = 'Ready to begin';
+
+  void startRecording() {
+    setState(() {
+      isRecording = true;
+      status = 'Recording session started';
+    });
+  }
+
+  void stopRecording() {
+    setState(() {
+      isRecording = false;
+      status = 'Session stopped';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF111B12),
-        title: const Text(
-          'NIGHTWATCH EVP',
-          style: TextStyle(
-            color: Color(0xFF80FF72),
-            fontWeight: FontWeight.bold,
-            letterSpacing: 2,
-          ),
-        ),
-        centerTitle: true,
+        title: const Text('EVP Video App'),
+        backgroundColor: Colors.deepPurple,
+        foregroundColor: Colors.white,
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const Icon(
+                Icons.videocam,
+                size: 90,
+                color: Colors.deepPurple,
+              ),
+              const SizedBox(height: 20),
               const Text(
-                'PARANORMAL FIELD UNIT',
+                'Paranormal Investigation',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Color(0xFF80FF72),
-                  letterSpacing: 3,
-                  fontSize: 12,
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
                 ),
+              ),
+              const SizedBox(height: 12),
+              const Text(
+                'Capture and review your investigation sessions.',
+                textAlign: TextAlign.center,
               ),
               const SizedBox(height: 28),
-              Container(
-                padding: const EdgeInsets.all(22),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF111B12),
-                  border: Border.all(
-                    color: const Color(0xFF426D3B),
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Column(
-                  children: [
-                    Icon(
-                      Icons.graphic_eq,
-                      color: Color(0xFF80FF72),
-                      size: 64,
-                    ),
-                    SizedBox(height: 12),
-                    Text(
-                      'INVESTIGATION READY',
-                      style: TextStyle(
-                        color: Color(0xFF80FF72),
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      'Audio • Video • Evidence Analysis',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white70),
-                    ),
-                  ],
-                ),
+              Text(
+                status,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 18),
               ),
               const SizedBox(height: 24),
-              _toolButton(
-                Icons.mic,
-                'EVP AUDIO RECORDER',
-                'Record unexplained sounds',
-              ),
-              const SizedBox(height: 12),
-              _toolButton(
-                Icons.videocam,
-                'VIDEO EVIDENCE',
-                'Capture investigation footage',
-              ),
-              const SizedBox(height: 12),
-              _toolButton(
-                Icons.sensors,
-                'FIELD SENSORS',
-                'Explore supported phone sensors',
-              ),
-              const SizedBox(height: 12),
-              _toolButton(
-                Icons.folder_open,
-                'EVIDENCE ARCHIVE',
-                'Review saved investigations',
-              ),
-              const Spacer(),
-              const Text(
-                'SYSTEM ONLINE  •  LOCAL SESSION',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color(0xFF80FF72),
-                  fontSize: 11,
-                  letterSpacing: 1.5,
+              if (!isRecording)
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: startRecording,
+                    icon: const Icon(Icons.play_arrow),
+                    label: const Text('Start Session'),
+                  ),
+                )
+              else
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: stopRecording,
+                    icon: const Icon(Icons.stop),
+                    label: const Text('Stop Session'),
+                  ),
                 ),
+              const SizedBox(height: 16),
+              const Text(
+                'Recording controls are a prototype. '
+                'Camera and microphone capture will be added next.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 12),
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  static Widget _toolButton(
-    IconData icon,
-    String title,
-    String subtitle,
-  ) {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFF111B12),
-        border: Border.all(
-          color: const Color(0xFF304A2D),
-        ),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: ListTile(
-        leading: Icon(icon, color: const Color(0xFF80FF72), size: 30),
-        title: Text(
-          title,
-          style: const TextStyle(
-            color: Color(0xFF80FF72),
-            fontWeight: FontWeight.bold,
-            fontSize: 13,
-          ),
-        ),
-        subtitle: Text(
-          subtitle,
-          style: const TextStyle(color: Colors.white60, fontSize: 12),
-        ),
-        trailing: const Icon(
-          Icons.chevron_right,
-          color: Color(0xFF80FF72),
         ),
       ),
     );
