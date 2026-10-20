@@ -1,0 +1,28 @@
+
+# Dart and Flutter
+.dart_tool/
+.packages
+.pub/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# IDE settings
+.idea/
+.vscode/
+
+# Android build files
+android/.gradle/
+android/local.properties
+android/key.properties
+**/GeneratedPluginRegistrant.java
+
+# Signing keys and secrets
+*.jks
+*.keystore
+.env
+.env.*
+
+# Operating system files
+.DS_Store
+Thumbs.db
